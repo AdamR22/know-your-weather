@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Weather App Bloc Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -56,12 +57,6 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   CircularProgressIndicator(),
-                  Text(
-                    'Loading...',
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                  ),
                 ],
               ),
             );
