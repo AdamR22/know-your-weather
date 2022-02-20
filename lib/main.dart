@@ -12,11 +12,10 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Weather App Bloc Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -38,6 +37,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: BlocConsumer<WeatherBloc, WeatherState>(
         listener: (context, state) {
@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
           if (state is WeatherLoading) {
             return Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   CircularProgressIndicator(),
                   Text(
@@ -65,9 +66,9 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           } else if (state is WeatherLoaded) {
-            return SecondPage(state.data);
+            return SecondPage(state.data, size);
           }
-          return FirstPage();
+          return FirstPage(size: size);
         },
       ),
     );

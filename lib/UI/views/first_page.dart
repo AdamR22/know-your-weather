@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:know_your_weather/UI/bloc/weather_bloc.dart';
 
 class FirstPage extends StatelessWidget {
-  late final Size size;
+  final Size size;
   final TextEditingController _searchFieldController = TextEditingController();
 
-  FirstPage({Key? key}) : super(key: key);
+  FirstPage({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     WeatherBloc bloc = BlocProvider.of<WeatherBloc>(context);
-    size = MediaQuery.of(context).size;
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(

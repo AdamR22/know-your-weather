@@ -6,12 +6,9 @@ class WeatherService {
     await dotenv.load(fileName: '.env');
     String? apiKey = dotenv.env['API_KEY'];
 
-    String url = """https://api.weatherstack.com/current
-                    ? access_key = $apiKey
-                    & query = $query""";
+    String url = """http://api.weatherstack.com/current?access_key=$apiKey&query=$query""";
 
     var response = await http.get(Uri.parse(url));
-
     return response;
   }
 }

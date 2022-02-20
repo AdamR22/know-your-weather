@@ -6,7 +6,7 @@ class WeatherRepository {
   static Future<WeatherModel> getWeather(String query) async {
     var response = await WeatherService.getWeather(query);
 
-    WeatherModel weatherData = WeatherModel.fromJson(response.toString());
+    WeatherModel weatherData = WeatherModel.fromJson(response.body.toString());
 
     return weatherData;
   }

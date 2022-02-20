@@ -5,18 +5,18 @@ import '../../data/models/weather_model.dart';
 import '../bloc/weather_bloc.dart';
 
 class SecondPage extends StatelessWidget {
-  late final Size size;
+  final Size size;
   final TextEditingController _searchFieldController = TextEditingController();
 
   final WeatherModel data;
-  SecondPage(this.data, {Key? key}) : super(key: key);
+  SecondPage(this.data, this.size, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     WeatherBloc bloc = BlocProvider.of<WeatherBloc>(context);
-    size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Container(
+        height: size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/weather.png'),

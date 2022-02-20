@@ -23,11 +23,11 @@ class WeatherModel {
 
   factory WeatherModel.fromMap(Map<String, dynamic> map) {
     return WeatherModel(
-      map['location']['name'] ?? '',
-      map['location']['country'] ?? '',
+      map['location']['name'].toString(),
+      map['location']['country'].toString(),
       map['current']['temperature'].toString(),
-      map['current']['weather_icons'][0] ?? '',
-      map['current']['weather_descriptions'][0] ?? '',
+      map['current']['weather_icons'][0].toString(),
+      map['current']['weather_descriptions'][0].toString(),
     );
   }
 
