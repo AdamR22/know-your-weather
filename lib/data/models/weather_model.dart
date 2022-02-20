@@ -25,7 +25,7 @@ class WeatherModel {
     return WeatherModel(
       map['location']['name'] ?? '',
       map['location']['country'] ?? '',
-      map['current']['temperature'] ?? '',
+      map['current']['temperature'].toString(),
       map['current']['weather_icons'][0] ?? '',
       map['current']['weather_descriptions'][0] ?? '',
     );

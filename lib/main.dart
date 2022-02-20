@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:know_your_weather/UI/bloc/weather_bloc.dart';
+import 'package:know_your_weather/UI/views/second_page.dart';
+
+import 'UI/views/first_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +20,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: BlocProvider(
+        create: (context) => WeatherBloc(),
+        child: const HomePage(),
+      ),
     );
   }
 }
@@ -28,88 +36,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Size size;
-  final TextEditingController _searchFieldController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/weather.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            children: [
-              Center(
-                child: SizedBox(
-                  height: size.height * .4,
-                  width: size.width * .4,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/cloud_icon.png'),
-                        fit: BoxFit.fitWidth,
-                      ),
+      body: BlocConsumer<WeatherBloc, WeatherState>(
+        listener: (context, state) {
+          if (state is WeatherFailedToLoad) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Something went wrong'),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is WeatherLoading) {
+            return Center(
+              child: Column(
+                children: const [
+                  CircularProgressIndicator(),
+                  Text(
+                    'Loading...',
+                    style: TextStyle(
+                      fontSize: 24,
                     ),
                   ),
-                ),
+                ],
               ),
-              const Text(
-                'Get City Weather',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: size.width * .1,
-                  right: size.width * .1,
-                  top: size.height * .05,
-                ),
-                child: TextField(
-                  controller: _searchFieldController,
-                  decoration: InputDecoration(
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        //TODO: Search weather functionality
-                      },
-                      child: const Icon(
-                        Icons.search,
-                      ),
-                    ),
-                    hintText: 'Enter city',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+            );
+          } else if (state is WeatherLoaded) {
+            return SecondPage(state.data);
+          }
+          return FirstPage();
+        },
       ),
     );
   }
